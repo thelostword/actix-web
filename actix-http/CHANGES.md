@@ -2,6 +2,47 @@
 
 ## Unreleased
 
+### Added
+
+- Add `header::CLEAR_SITE_DATA` constant.
+
+### Changed
+
+- Update `brotli` dependency to `7`.
+- Minimum supported Rust version (MSRV) is now 1.75.
+
+## 3.9.0
+
+### Added
+
+- Implement `FromIterator<(HeaderName, HeaderValue)>` for `HeaderMap`.
+
+## 3.8.0
+
+### Added
+
+- Add `error::InvalidStatusCode` re-export.
+
+## 3.7.0
+
+### Added
+
+- Add `rustls-0_23` crate feature
+- Add `{h1::H1Service, h2::H2Service, HttpService}::rustls_0_23()` and `HttpService::rustls_0_23_with_config()` service constructors.
+
+### Changed
+
+- Update `brotli` dependency to `6`.
+- Minimum supported Rust version (MSRV) is now 1.72.
+
+## 3.6.0
+
+### Added
+
+- Add `rustls-0_22` crate feature.
+- Add `{h1::H1Service, h2::H2Service, HttpService}::rustls_0_22()` and `HttpService::rustls_0_22_with_config()` service constructors.
+- Implement `From<&HeaderMap>` for `http::HeaderMap`.
+
 ## 3.5.1
 
 ### Fixed

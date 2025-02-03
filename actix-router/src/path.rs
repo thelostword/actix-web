@@ -143,9 +143,9 @@ impl<T: ResourcePath> Path<T> {
         for (seg_name, val) in self.segments.iter() {
             if name == seg_name {
                 return match val {
-                    PathItem::Static(ref s) => Some(s),
-                    PathItem::Segment(s, e) => {
-                        Some(&self.path.path()[(*s as usize)..(*e as usize)])
+                    PathItem::Static(ref seg) => Some(seg),
+                    PathItem::Segment(start, end) => {
+                        Some(&self.path.path()[(*start as usize)..(*end as usize)])
                     }
                 };
             }
@@ -154,15 +154,11 @@ impl<T: ResourcePath> Path<T> {
         None
     }
 
-    /// Get matched parameter by name.
+    /// Returns matched parameter by name.
     ///
     /// If keyed parameter is not available empty string is used as default value.
     pub fn query(&self, key: &str) -> &str {
-        if let Some(s) = self.get(key) {
-            s
-        } else {
-            ""
-        }
+        self.get(key).unwrap_or_default()
     }
 
     /// Return iterator to items in parameter container.
@@ -197,8 +193,10 @@ impl<'a, T: ResourcePath> Iterator for PathIter<'a, T> {
         if self.idx < self.params.segment_count() {
             let idx = self.idx;
             let res = match self.params.segments[idx].1 {
-                PathItem::Static(ref s) => s,
-                PathItem::Segment(s, e) => &self.params.path.path()[(s as usize)..(e as usize)],
+                PathItem::Static(ref seg) => seg,
+                PathItem::Segment(start, end) => {
+                    &self.params.path.path()[(start as usize)..(end as usize)]
+                }
             };
             self.idx += 1;
             return Some((&self.params.segments[idx].0, res));
@@ -221,8 +219,8 @@ impl<T: ResourcePath> Index<usize> for Path<T> {
 
     fn index(&self, idx: usize) -> &str {
         match self.segments[idx].1 {
-            PathItem::Static(ref s) => s,
-            PathItem::Segment(s, e) => &self.path.path()[(s as usize)..(e as usize)],
+            PathItem::Static(ref seg) => seg,
+            PathItem::Segment(start, end) => &self.path.path()[(start as usize)..(end as usize)],
         }
     }
 }

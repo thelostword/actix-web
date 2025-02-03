@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+- Update `brotli` dependency to `7`.
+- Prevent panics on connection pool drop when Tokio runtime is shutdown early.
+- Minimum supported Rust version (MSRV) is now 1.75.
+- Do not send `Host` header on HTTP/2 requests, as it is not required, and some web servers may reject it.
+
+## 3.5.1
+
+- Fix WebSocket `Host` request header value when using a non-default port.
+
+## 3.5.0
+
+- Add `rustls-0_23`, `rustls-0_23-webpki-roots`, and `rustls-0_23-native-roots` crate features.
+- Add `awc::Connector::rustls_0_23()` constructor.
+- Fix `rustls-0_22-native-roots` root store lookup.
+- Update `brotli` dependency to `6`.
+- Minimum supported Rust version (MSRV) is now 1.72.
+
+## 3.4.0
+
+- Add `rustls-0_22-webpki-roots` and `rustls-0_22-native-roots` crate feature.
+- Add `awc::Connector::rustls_0_22()` method.
+
 ## 3.3.0
 
 - Update `trust-dns-resolver` dependency to `0.23`.

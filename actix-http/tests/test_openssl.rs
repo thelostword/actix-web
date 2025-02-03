@@ -14,7 +14,7 @@ use actix_http_test::test_server;
 use actix_service::{fn_service, ServiceFactoryExt};
 use actix_utils::future::{err, ok, ready};
 use bytes::{Bytes, BytesMut};
-use derive_more::{Display, Error};
+use derive_more::derive::{Display, Error};
 use futures_core::Stream;
 use futures_util::{stream::once, StreamExt as _};
 use openssl::{
@@ -42,9 +42,11 @@ where
 }
 
 fn tls_config() -> SslAcceptor {
-    let cert = rcgen::generate_simple_self_signed(vec!["localhost".to_owned()]).unwrap();
-    let cert_file = cert.serialize_pem().unwrap();
-    let key_file = cert.serialize_private_key_pem();
+    let rcgen::CertifiedKey { cert, key_pair } =
+        rcgen::generate_simple_self_signed(["localhost".to_owned()]).unwrap();
+    let cert_file = cert.pem();
+    let key_file = key_pair.serialize_pem();
+
     let cert = X509::from_pem(cert_file.as_bytes()).unwrap();
     let key = PKey::private_key_from_pem(key_file.as_bytes()).unwrap();
 
@@ -396,7 +398,7 @@ async fn h2_response_http_error_handling() {
 }
 
 #[derive(Debug, Display, Error)]
-#[display(fmt = "error")]
+#[display("error")]
 struct BadRequest;
 
 impl From<BadRequest> for Response<BoxBody> {

@@ -1,6 +1,6 @@
 use std::{convert::Infallible, str};
 
-use derive_more::{Deref, DerefMut};
+use derive_more::derive::{Deref, DerefMut};
 
 use crate::{
     error::ParseError,
@@ -126,7 +126,7 @@ mod tests {
     use std::fmt;
 
     use super::*;
-    use crate::{http::header::Header, test::TestRequest, HttpRequest};
+    use crate::{test::TestRequest, HttpRequest};
 
     fn req_from_raw_headers<H: Header, I: IntoIterator<Item = V>, V: AsRef<[u8]>>(
         header_lines: I,
